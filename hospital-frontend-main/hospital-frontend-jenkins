@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/suneethabulla/hospital-frontend.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying frontend...'
+                sh '''
+                mkdir -p /var/www/hospital-frontend
+                cp -r dist/* /var/www/hospital-frontend/
+                '''
+            }
+        }
+    }
+}
